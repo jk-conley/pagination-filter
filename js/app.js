@@ -36,21 +36,27 @@ const howManyPages = (list) => {
   return pages;
 }
 
-console.log(howManyPages(studentListItems) + " pages");
+//console.log(howManyPages(studentListItems) + " pages");
+
+const createPaginationSection = () => {
+
+  $(pageDiv).append($div);
+  $($div).append($ul);
+
+}
+
+createPaginationSection();
 
 /*========================
 Create page links
 ========================*/
 
-const createPageLink = () => {
+const createPageLinks = () => {
   // set pages needed
   let pages = howManyPages(studentListItems);
   console.log(pages + " in create function");
 
-
-  // create pagination div and ul
-  $(pageDiv).append($div);
-  $($div).append($ul);
+  // set vars to create page links needed
   let myLis = "";
   let count = 0;
 
@@ -60,8 +66,17 @@ const createPageLink = () => {
     myLis += `<li><a href="#">${count}</a></li>`;
   }
 
-  $($ul).append(myLis);
-
+  return myLis;
 }
 
-createPageLink();
+$($ul).append(createPageLinks());
+
+/*========================
+Remove page links
+========================*/
+
+const removePageLinks = () => {
+  $('.pagination li').remove();
+}
+
+removePageLinks();
