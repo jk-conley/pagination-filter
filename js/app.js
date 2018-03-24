@@ -24,19 +24,15 @@ const howManyPages = (list) => {
   let listLength = list.length;
   // initialize page count
   let pages = 0;
-  // determine page value
-  for (let i = listLength; i > 0; i--) {
-    if (i >= 10) {
-      pages++;
-    }
-  }
 
-  pages = Math.ceil(pages / 10);
+  pages = Math.ceil(listLength / 10);
 
   return pages;
 }
 
-//console.log(howManyPages(studentListItems) + " pages");
+/*===================================
+Create page link section
+===================================*/
 
 const createPaginationSection = () => {
 
@@ -44,8 +40,6 @@ const createPaginationSection = () => {
   $($div).append($ul);
 
 }
-
-createPaginationSection();
 
 /*========================
 Create page links
@@ -63,13 +57,11 @@ const createPageLinks = () => {
   // create links for each page needed
   for (let i = 0; i < pages; i++) {
     count++;
-    myLis += `<li><a href="#">${count}</a></li>`;
+    myLis += `<li><a href="#${count}">${count}</a></li>`;
   }
 
   return myLis;
 }
-
-$($ul).append(createPageLinks());
 
 /*========================
 Remove page links
@@ -79,4 +71,75 @@ const removePageLinks = () => {
   $('.pagination li').remove();
 }
 
-removePageLinks();
+/*========================
+Show page
+========================*/
+
+const showPage = (link, studentList) => {
+
+  // hide all students on page
+  $(studentList).hide();
+
+  // Variables used to check page and students appearing on page
+  const page = parseInt(link);
+  let totalItems = studentList.length;
+  let end;
+  let start;
+  let temp;
+
+  // loop thru student list to give 10 per page
+  for (let i = 0; i < totalItems; i++) {
+    if (page === 1) {
+      start = 0;
+      end = 10;
+      temp = $(studentList).slice(start, end);
+      $(temp).eq(i).show();
+    } else if (page !== 1) {
+      end = page * 10;
+      start = end - 10;
+      temp = $(studentList).slice(start, end);
+      $(temp).eq(i).show();
+    }
+  }
+
+}
+
+/*========================
+Append page links
+========================*/
+
+const appendPageLinks = (studentList) => {
+
+  // determine how many pages
+  const pages = howManyPages(studentListItems);
+
+  // create page link section
+  createPaginationSection();
+
+  // create page links
+  const links = createPageLinks();
+
+  // remove old page links
+  removePageLinks();
+
+  // append new page links
+  $($ul).append(links);
+
+  // Initialize page
+  showPage(1, studentListItems);
+  $('.pagination a[href="#1"]').addClass('active');
+
+  // define what happens when user clicks link
+  $('.pagination').on('click', 'a', function (event) {
+    // use showPage function to display the page for link clicked
+    showPage($(event.target).text(), studentList);
+
+    // mark link as "active"
+    $('a').not(event.target).removeClass('active');
+    $(event.target).addClass('active');
+  });
+
+
+}
+
+appendPageLinks(studentListItems);
