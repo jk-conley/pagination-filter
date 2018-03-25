@@ -97,6 +97,8 @@ const showPage = (link, studentList) => {
       temp = $(studentList).slice(start, end);
       $(temp).eq(i).show();
     }
+    // Old code first used to develop the idea
+    // if (page === 1) {
     // start = 0;
     // end = 10;
     // temp = $(studentList).slice(start, end);
