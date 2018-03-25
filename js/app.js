@@ -20,11 +20,14 @@ Determine how many pages are needed
 ===================================*/
 
 const howManyPages = (list) => {
+
   // get length of list
   let listLength = list.length;
+
   // initialize page count
   let pages = 0;
 
+  // total number of links or pages needed for list
   pages = Math.ceil(listLength / 10);
 
   return pages;
@@ -35,7 +38,7 @@ Create page link section
 ===================================*/
 
 const createPaginationSection = () => {
-
+  // link up div and ul to prep for lis
   $(pageDiv).append($div);
   $($div).append($ul);
 
@@ -48,7 +51,6 @@ Create page links
 const createPageLinks = () => {
   // set pages needed
   let pages = howManyPages(studentListItems);
-  console.log(pages + " in create function");
 
   // set vars to create page links needed
   let myLis = "";
