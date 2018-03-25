@@ -84,7 +84,7 @@ const showPage = (link, studentList) => {
 
   // Variables used to check page and students appearing on page
   const page = parseInt(link);
-  let totalItems = studentList.length;
+  const totalItems = studentList.length;
   let end;
   let start;
   let temp;
@@ -97,18 +97,6 @@ const showPage = (link, studentList) => {
       temp = $(studentList).slice(start, end);
       $(temp).eq(i).show();
     }
-    // Old code first used to develop the idea
-    // if (page === 1) {
-    // start = 0;
-    // end = 10;
-    // temp = $(studentList).slice(start, end);
-    // $(temp).eq(i).show();
-    // } else if (page !== 1) {
-    //   end = page * 10;
-    //   start = end - 10;
-    //   temp = $(studentList).slice(start, end);
-    //   $(temp).eq(i).show();
-    // }
   }
 
 }
@@ -118,9 +106,6 @@ Append page links
 ========================*/
 
 const appendPageLinks = (studentList) => {
-
-  // determine how many pages
-  const pages = howManyPages(studentListItems);
 
   // create page link section
   createPaginationSection();
@@ -140,6 +125,7 @@ const appendPageLinks = (studentList) => {
 
   // define what happens when user clicks link
   $('.pagination').on('click', 'a', function (event) {
+
     // use showPage function to display the page for link clicked
     showPage($(event.target).text(), studentList);
 
