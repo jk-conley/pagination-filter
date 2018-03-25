@@ -16,7 +16,7 @@ const $div = $('<div class="pagination"></div>'),
 
 
 /*===============================
-PAGINATION FUNCTIONS
+***** PAGINATION FUNCTIONS *****
 ===============================*/
 
 /*===================================
@@ -52,9 +52,9 @@ const createPaginationSection = () => {
 Create page links
 ========================*/
 
-const createPageLinks = () => {
+const createPageLinks = (studentList) => {
   // set pages needed
-  let pages = howManyPages(studentListItems);
+  let pages = howManyPages(studentList);
 
   // set vars to create page links needed
   let myLis = "";
@@ -75,6 +75,7 @@ Remove page links
 
 const removePageLinks = () => {
   $('.pagination li').remove();
+  $(studentListItems).hide();
 }
 
 /*========================
@@ -115,7 +116,7 @@ const appendPageLinks = (studentList) => {
   createPaginationSection();
 
   // create page links
-  const links = createPageLinks();
+  const links = createPageLinks(studentList);
 
   // remove old page links
   removePageLinks();
@@ -124,7 +125,7 @@ const appendPageLinks = (studentList) => {
   $($ul).append(links);
 
   // Initialize page
-  showPage(1, studentListItems);
+  showPage(1, studentList);
   $('.pagination a[href="#1"]').addClass('active');
 
   // define what happens when user clicks link
@@ -142,7 +143,7 @@ const appendPageLinks = (studentList) => {
 }
 
 /*===============================
-SEARCH FUNCTIONS
+***** SEARCH FUNCTIONS *****
 ===============================*/
 
 /*===============================
@@ -166,7 +167,7 @@ Does student match name or email
 
 const doesStudentMatch = (search, studentList) => {
 
-  let temp;
+  let temp = "";
 
   for (let i = 0; i < studentList.length; i++) {
 
@@ -184,17 +185,39 @@ const doesStudentMatch = (search, studentList) => {
   return temp;
 }
 
+
 /*===============================
 Search list main function
 ===============================*/
 
 const searchList = () => {
 
-  const search = $($searchInput).val();
+  // obtain search value
+  let search = $($searchInput).val();
   console.log(search);
+
+  // remove old links
+  removePageLinks();
+  $('.no-match').remove();
+
+  // search student list to see if match is found
+  const list = doesStudentMatch(search, studentListItems);
+  console.log(list.length);
+
+  // Check list value
+  if (list === undefined) {
+    $(pageDiv).append('<h3 class="no-match">No students found</h3>');
+  } else if (list.length > 10) {
+    appendPageLinks(list);
+  } else if (list.length <= 10) {
+    showPage(1, list);
+  }
 
 
 }
 
-
 appendPageLinks(studentListItems);
+
+$($searchBtn).on('click', function () {
+  searchList();
+});
