@@ -26,13 +26,10 @@ Determine how many pages are needed
 const howManyPages = (list) => {
 
   // get length of list
-  let listLength = list.length;
-
-  // initialize page count
-  let pages = 0;
+  const listLength = list.length;
 
   // total number of links or pages needed for list
-  pages = Math.ceil(listLength / 10);
+  const pages = Math.ceil(listLength / 10);
 
   return pages;
 }
@@ -52,9 +49,9 @@ const createPaginationSection = () => {
 Create page links
 ========================*/
 
-const createPageLinks = (studentList) => {
+const createPageLinks = (list) => {
   // set pages needed
-  let pages = howManyPages(studentList);
+  const pages = howManyPages(list);
 
   // set vars to create page links needed
   let myLis = "";
@@ -75,21 +72,20 @@ Remove page links
 
 const removePageLinks = () => {
   $('.pagination li').remove();
-  $(studentListItems).hide();
 }
 
 /*========================
 Show page
 ========================*/
 
-const showPage = (link, studentList) => {
+const showPage = (link, list) => {
 
   // hide all students on page
-  $(studentList).hide();
+  $(list).hide();
 
   // Variables used to check page and students appearing on page
   const page = parseInt(link);
-  const totalItems = studentList.length;
+  const totalItems = list.length;
   let end;
   let start;
   let temp;
@@ -99,7 +95,7 @@ const showPage = (link, studentList) => {
     if (page !== undefined && page !== null) {
       end = page * 10;
       start = end - 10;
-      temp = $(studentList).slice(start, end);
+      temp = $(list).slice(start, end);
       $(temp).eq(i).show();
     }
   }
@@ -110,13 +106,13 @@ const showPage = (link, studentList) => {
 Append page links
 ========================*/
 
-const appendPageLinks = (studentList) => {
+const appendPageLinks = (list) => {
 
   // create page link section
   createPaginationSection();
 
   // create page links
-  const links = createPageLinks(studentList);
+  const links = createPageLinks(list);
 
   // remove old page links
   removePageLinks();
@@ -125,14 +121,14 @@ const appendPageLinks = (studentList) => {
   $($ul).append(links);
 
   // Initialize page
-  showPage(1, studentList);
+  showPage(1, list);
   $('.pagination a[href="#1"]').addClass('active');
 
   // define what happens when user clicks link
   $('.pagination').on('click', 'a', function (event) {
 
     // use showPage function to display the page for link clicked
-    showPage($(event.target).text(), studentList);
+    showPage($(event.target).text(), list);
 
     // mark link as "active"
     $('a').not(event.target).removeClass('active');
@@ -159,17 +155,15 @@ const createSearchSection = () => {
 
 }
 
-createSearchSection();
-
 /*===============================
 Does student match name or email
 ===============================*/
 
-const doesStudentMatch = (search, studentList) => {
+const doesStudentMatch = (search, list) => {
 
-  let temp = "";
+  let temp;
 
-  for (let i = 0; i < studentList.length; i++) {
+  for (let i = 0; i < list.length; i++) {
 
     // get name and email
     let name = $('.student-item h3').eq(i).text();
@@ -177,7 +171,7 @@ const doesStudentMatch = (search, studentList) => {
 
     // compare search to name and email, if either match create list
     if (name.includes(search) || email.includes(search)) {
-      temp = $(temp).add($(studentList).eq(i));
+      temp = $(temp).add($(list).eq(i));
     }
 
   }
@@ -194,15 +188,15 @@ const searchList = () => {
 
   // obtain search value
   let search = $($searchInput).val();
-  console.log(search);
 
-  // remove old links
+  // remove old links and elements
   removePageLinks();
   $('.no-match').remove();
+  $(studentListItems).hide();
 
   // search student list to see if match is found
   const list = doesStudentMatch(search, studentListItems);
-  console.log(list.length);
+  //console.log(list.length);
 
   // Check list value
   if (list === undefined) {
@@ -216,8 +210,19 @@ const searchList = () => {
 
 }
 
-appendPageLinks(studentListItems);
+/*===============================
+Call functions
+===============================*/
 
-$($searchBtn).on('click', function () {
-  searchList();
+$(document).ready(function () {
+
+  createSearchSection();
+
+  appendPageLinks(studentListItems);
+
+  $($searchBtn).on('click', function () {
+    searchList();
+  });
+
+
 });
