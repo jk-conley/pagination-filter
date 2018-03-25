@@ -151,6 +151,7 @@ Create search section
 
 const createSearchSection = () => {
 
+  // Builds the search section
   $(pageHeaderDiv).append($searchDiv);
   $($searchDiv).append($searchInput);
   $($searchDiv).append($searchBtn);
@@ -169,8 +170,13 @@ const doesStudentMatch = (search, studentList) => {
 
   for (let i = 0; i < studentList.length; i++) {
 
-    if (search === $(studentList).eq(i).text()) {
-      temp.append($(studentList).eq(i));
+    // get name and email
+    let name = $('.student-item h3').eq(i).text();
+    let email = $('.student-item span.email').eq(i).text();
+
+    // compare search to name and email, if either match create list
+    if (name.includes(search) || email.includes(search)) {
+      temp = $(temp).add($(studentList).eq(i));
     }
 
   }
@@ -178,12 +184,17 @@ const doesStudentMatch = (search, studentList) => {
   return temp;
 }
 
+/*===============================
+Search list main function
+===============================*/
+
+const searchList = () => {
+
+  const search = $($searchInput).val();
+  console.log(search);
 
 
-
-
-
-
+}
 
 
 appendPageLinks(studentListItems);
