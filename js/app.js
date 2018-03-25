@@ -4,15 +4,19 @@ VARIABLES
 // Selecting current elements
 const studentListItems = $('.student-item');
 const pageDiv = $('.page');
+const pageHeaderDiv = $('.page-header');
 
 // Creating elements to be added dynamically
 const $div = $('<div class="pagination"></div>'),
-  $ul = $('<ul></ul>');
+  $ul = $('<ul></ul>'),
+  $searchDiv = $('<div class="student-search"></div>'),
+  $searchInput = $('<input placeholder="Search for students...">'),
+  $searchBtn = $('<button>Search</button>');
 
 
 
 /*===============================
-FUNCTIONS
+PAGINATION FUNCTIONS
 ===============================*/
 
 /*===================================
@@ -136,5 +140,50 @@ const appendPageLinks = (studentList) => {
 
 
 }
+
+/*===============================
+SEARCH FUNCTIONS
+===============================*/
+
+/*===============================
+Create search section
+===============================*/
+
+const createSearchSection = () => {
+
+  $(pageHeaderDiv).append($searchDiv);
+  $($searchDiv).append($searchInput);
+  $($searchDiv).append($searchBtn);
+
+}
+
+createSearchSection();
+
+/*===============================
+Does student match name or email
+===============================*/
+
+const doesStudentMatch = (search, studentList) => {
+
+  let temp;
+
+  for (let i = 0; i < studentList.length; i++) {
+
+    if (search === $(studentList).eq(i).text()) {
+      temp.append($(studentList).eq(i));
+    }
+
+  }
+
+  return temp;
+}
+
+
+
+
+
+
+
+
 
 appendPageLinks(studentListItems);
