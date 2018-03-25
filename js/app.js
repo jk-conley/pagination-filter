@@ -91,17 +91,22 @@ const showPage = (link, studentList) => {
 
   // loop thru student list to give 10 per page
   for (let i = 0; i < totalItems; i++) {
-    if (page === 1) {
-      start = 0;
-      end = 10;
-      temp = $(studentList).slice(start, end);
-      $(temp).eq(i).show();
-    } else if (page !== 1) {
+    if (page !== undefined && page !== null) {
       end = page * 10;
       start = end - 10;
       temp = $(studentList).slice(start, end);
       $(temp).eq(i).show();
     }
+    // start = 0;
+    // end = 10;
+    // temp = $(studentList).slice(start, end);
+    // $(temp).eq(i).show();
+    // } else if (page !== 1) {
+    //   end = page * 10;
+    //   start = end - 10;
+    //   temp = $(studentList).slice(start, end);
+    //   $(temp).eq(i).show();
+    // }
   }
 
 }
