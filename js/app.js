@@ -108,6 +108,9 @@ Append page links
 
 const appendPageLinks = (list) => {
 
+  console.log(list.length + " initial list");
+
+
   // create page link section
   createPaginationSection();
 
@@ -126,6 +129,8 @@ const appendPageLinks = (list) => {
 
   // define what happens when user clicks link
   $('.pagination').on('click', 'a', function (event) {
+
+    console.log(list.length + " clicking a link");
 
     // use showPage function to display the page for link clicked
     showPage($(event.target).text(), list);
@@ -184,7 +189,7 @@ const doesStudentMatch = (search, list) => {
 Search list main function
 ===============================*/
 
-const searchList = () => {
+const searchList = (list) => {
 
   // obtain search value
   let search = $($searchInput).val();
@@ -194,20 +199,21 @@ const searchList = () => {
   $('.no-match').remove();
   $(studentListItems).hide();
 
-  // search student list to see if match is found
-  const list = doesStudentMatch(search, studentListItems);
-  //console.log(list.length);
-
-  // Check list value
-  if (list === undefined) {
-    $(pageDiv).append('<h3 class="no-match">No students found</h3>');
-  } else if (list.length > 10) {
+  if (search === "") {
     appendPageLinks(list);
-  } else if (list.length <= 10) {
-    showPage(1, list);
+  } else {
+    // search student list to see if match is found
+    const newList = doesStudentMatch(search, list);
+
+    // Check list value
+    if (newList === undefined) {
+      $(pageDiv).append('<h3 class="no-match">No students found</h3>');
+    } else if (newList.length > 10) {
+      appendPageLinks(newList);
+    } else if (newList.length <= 10) {
+      showPage(1, newList);
+    }
   }
-
-
 }
 
 /*===============================
@@ -220,9 +226,9 @@ $(document).ready(function () {
 
   appendPageLinks(studentListItems);
 
-  $($searchBtn).on('click', function () {
-    searchList();
+  $($searchDiv).on('click', 'button', function (event) {
+    event.preventDefault();
+    searchList(studentListItems);
   });
-
 
 });
