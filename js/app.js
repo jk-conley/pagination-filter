@@ -108,9 +108,6 @@ Append page links
 
 const appendPageLinks = (list) => {
 
-  console.log(list.length + " initial list");
-
-
   // create page link section
   createPaginationSection();
 
@@ -130,9 +127,10 @@ const appendPageLinks = (list) => {
   // define what happens when user clicks link
   $('.pagination').on('click', 'a', function (event) {
 
-    console.log(list.length + " clicking a link");
+    // Hide anyone that doesn't belong
+    $(studentListItems).hide();
 
-    // use showPage function to display the page for link clicked
+    // show the page
     showPage($(event.target).text(), list);
 
     // mark link as "active"
@@ -192,7 +190,7 @@ Search list main function
 const searchList = (list) => {
 
   // obtain search value
-  let search = $($searchInput).val();
+  let search = $($searchInput).val().toLowerCase();
 
   // remove old links and elements
   removePageLinks();
