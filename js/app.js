@@ -226,8 +226,7 @@ $(document).ready(function () {
 
   appendPageLinks(studentListItems);
 
-  $($searchDiv).on('click', 'button', function (event) {
-    event.preventDefault();
+  $($searchDiv).on('click', 'button', function () {
     searchList(studentListItems);
   });
 
